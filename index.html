@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enrollment UX — UAGC Takeaways</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --coral:#C94B2A;--coral2:#E8623E;--coral-bg:#FDF1ED;
+  --navy:#1A2640;
+  --teal:#0D7A62;--teal-bg:#E8F6F2;
+  --amber:#8A5200;--amber-bg:#FEF6E4;
+  --purple:#3C3489;--purple-bg:#EEEDFE;
+  --ink:#18181A;--ink2:#3A3A40;--ink3:#6E6E7A;
+  --rule:#E4E2DC;--bg:#FAF9F6;--white:#FFFFFF;
+  --page-w:860px;
+}
+html{font-size:16px;background:var(--bg)}
+body{font-family:'DM Sans',sans-serif;color:var(--ink);background:var(--bg);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+
+/* ── COVER ── */
+.cover{background:var(--navy);color:#fff;padding:68px 0 52px;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-80px;right:-80px;width:480px;height:480px;border-radius:50%;background:var(--coral);opacity:.1}
+.cover::after{content:'';position:absolute;bottom:-60px;left:-40px;width:280px;height:280px;border-radius:50%;background:var(--teal);opacity:.12}
+.cover-inner{max-width:var(--page-w);margin:0 auto;padding:0 52px;position:relative;z-index:1}
+.cover-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--coral2);margin-bottom:16px}
+.cover-title{font-family:'Playfair Display',serif;font-size:clamp(32px,5vw,52px);line-height:1.1;color:#fff;max-width:560px;margin-bottom:16px}
+.cover-title em{color:var(--coral2);font-style:italic}
+.cover-sub{font-size:15px;color:rgba(255,255,255,.6);max-width:500px;line-height:1.65;margin-bottom:32px}
+
+.criteria-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
+.criterion{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.criterion-name{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--coral2)}
+.criterion-gap{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.45}
+
+.cover-meta{display:flex;gap:24px;flex-wrap:wrap;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}
+.cover-meta-item{font-size:11px;color:rgba(255,255,255,.38);letter-spacing:.04em}
+.cover-meta-item strong{display:block;font-size:12px;color:rgba(255,255,255,.7);font-weight:500;margin-bottom:1px}
+
+/* ── PAGE ── */
+.page{max-width:var(--page-w);margin:0 auto;padding:0 52px 80px}
+
+/* ── INTRO ── */
+.intro{padding:52px 0 36px}
+.intro-eyebrow{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--coral);margin-bottom:10px}
+.intro-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,32px);line-height:1.2;color:var(--ink);margin-bottom:10px}
+.intro-desc{font-size:14.5px;color:var(--ink3);line-height:1.7;max-width:640px}
+
+/* ── STATS ── */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:48px}
+.stat-card{background:var(--white);border:1px solid var(--rule);border-radius:12px;padding:24px 20px;border-top:4px solid var(--coral)}
+.stat-card.t{border-top-color:var(--teal)}.stat-card.n{border-top-color:var(--navy)}
+.stat-num{font-family:'Playfair Display',serif;font-size:44px;color:var(--coral);line-height:1;margin-bottom:8px}
+.stat-card.t .stat-num{color:var(--teal)}.stat-card.n .stat-num{color:var(--navy)}
+.stat-desc{font-size:13px;color:var(--ink2);line-height:1.5;margin-bottom:6px}
+.stat-src{font-size:11px;color:var(--ink3);font-style:italic}
+
+/* ── COMPARE TABLE ── */
+.compare-table{width:100%;border-collapse:collapse;margin:24px 0 40px;border-radius:10px;overflow:hidden;border:1px solid var(--rule)}
+.compare-table th{padding:13px 20px;font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;text-align:left}
+.compare-table th.bad{background:#FDF1ED;color:var(--coral)}.compare-table th.good{background:#E8F6F2;color:var(--teal)}
+.compare-table td{padding:14px 20px;font-size:13.5px;color:var(--ink2);line-height:1.55;border-top:1px solid var(--rule);vertical-align:top}
+.compare-table td.bad{background:#FFFAF8}.compare-table td.good{background:#F7FDFB}
+.compare-table td.bad::before{content:'✕  ';color:var(--coral);font-weight:700}
+.compare-table td.good::before{content:'✓  ';color:var(--teal);font-weight:700}
+.compare-table td strong{color:var(--ink);font-weight:600}
+
+/* ── TAKEAWAY CARD ── */
+.tc{background:var(--white);border:1px solid var(--rule);border-radius:16px;overflow:hidden;margin-bottom:28px}
+.tc-top{display:grid;grid-template-columns:1fr 1fr;min-height:240px}
+.tc-screenshot{position:relative;background:#111;overflow:hidden}
+.tc-screenshot img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;opacity:.92}
+.tc-screenshot-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.78));padding:32px 14px 12px;font-size:11px;font-weight:500;color:rgba(255,255,255,.88);letter-spacing:.03em}
+.tc-site-badge{position:absolute;top:10px;left:10px;font-size:10px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;padding:3px 9px;border-radius:3px}
+.tc-site-badge.navy{background:rgba(26,38,64,.85);color:#fff}
+.tc-site-badge.coral{background:rgba(201,75,42,.85);color:#fff}
+.tc-site-badge.teal{background:rgba(13,122,98,.85);color:#fff}
+.tc-site-badge.amber{background:rgba(138,82,0,.85);color:#fff}
+.tc-site-badge.purple{background:rgba(60,52,137,.85);color:#fff}
+
+.tc-content{padding:24px 26px;display:flex;flex-direction:column;justify-content:space-between;gap:16px;border-left:1px solid var(--rule)}
+.tc-criterion{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px}
+.tc-title{font-family:'Playfair Display',serif;font-size:17px;line-height:1.35;color:var(--ink)}
+.tc-gap{font-size:13px;color:var(--ink3);line-height:1.55;flex:1}
+.tc-gap strong{color:var(--ink);font-weight:500}
+
+.tc-fix{background:var(--navy);border-radius:10px;padding:16px 18px;margin:0 20px 20px}
+.tc-fix-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--coral2);margin-bottom:7px}
+.tc-fix-text{font-size:13px;color:rgba(255,255,255,.82);line-height:1.6}
+.tc-fix-source{font-size:11px;color:rgba(255,255,255,.35);margin-top:6px;font-style:italic}
+
+/* ── CLOSING ── */
+.closing{background:var(--navy);padding:56px 0;margin-top:64px}
+.closing-inner{max-width:var(--page-w);margin:0 auto;padding:0 52px;text-align:center}
+.closing-quote{font-family:'Playfair Display',serif;font-size:clamp(17px,2.6vw,26px);color:#fff;font-style:italic;line-height:1.45;max-width:640px;margin:0 auto 20px}
+.closing-attr{font-size:11px;color:rgba(255,255,255,.32);letter-spacing:.1em;text-transform:uppercase}
+
+.tc-fix + .tc-fix{margin-top:8px}
+/* ── COMPETITOR SECTION ── */
+.comp-section{margin:48px 0}
+.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:20px}
+.comp-card{background:var(--white);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.comp-card-header{padding:14px 18px;border-bottom:1px solid var(--rule);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.comp-name{font-size:14px;font-weight:600;color:var(--ink)}
+.comp-url{font-size:11px;color:var(--ink3)}
+.comp-body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.comp-item{display:flex;gap:10px;align-items:flex-start}
+.comp-item-dot{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px}
+.comp-item-dot.g{background:var(--teal-bg);color:var(--teal)}
+.comp-item-dot.r{background:var(--coral-bg);color:var(--coral)}
+.comp-item-dot.a{background:var(--amber-bg);color:var(--amber)}
+.comp-item-text{font-size:13px;color:var(--ink2);line-height:1.5}
+.comp-item-text strong{color:var(--ink);font-weight:500}
+.comp-takeaway{margin:4px 18px 16px;background:var(--navy);border-radius:8px;padding:12px 16px}
+.comp-takeaway-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--coral2);margin-bottom:5px}
+.comp-takeaway-text{font-size:12.5px;color:rgba(255,255,255,.8);line-height:1.5}
+
+@media print{.cover,.tc,.comp-card{-webkit-print-color-adjust:exact;print-color-adjust:exact}.tc,.comp-card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-inner">
+    <div class="cover-eyebrow">UAGC · Enrollment UX · Leadership Concerns · April 2026</div>
+    <h1 class="cover-title">What <em>award-winning</em> sites do differently — and what UAGC should fix</h1>
+    <p class="cover-sub">Leadership identified six areas impacting the adult learner enrollment experience. Here is what the benchmark shows — and what to do about each one.</p>
+
+    <div class="criteria-grid">
+      <div class="criterion">
+        <div class="criterion-name">01 &nbsp;White space</div>
+        <div class="criterion-gap">Dense layouts cause adult learners to scan past critical program and cost information</div>
+      </div>
+      <div class="criterion">
+        <div class="criterion-name">02 &nbsp;Above the fold</div>
+        <div class="criterion-gap">Multiple competing elements prevent learners from knowing what to do first</div>
+      </div>
+      <div class="criterion">
+        <div class="criterion-name">03 &nbsp;Multiple RFIs</div>
+        <div class="criterion-gap">Repeated inquiry forms across the page reduce completion on all of them</div>
+      </div>
+      <div class="criterion">
+        <div class="criterion-name">04 &nbsp;UAGC in page copy</div>
+        <div class="criterion-gap">Repeating the institution name displaces the career information adult learners are looking for</div>
+      </div>
+      <div class="criterion">
+        <div class="criterion-name">05 &nbsp;Location of Lightcast</div>
+        <div class="criterion-gap">Outcomes data placed too low or in isolation never reaches the adult learner before they leave</div>
+      </div>
+      <div class="criterion">
+        <div class="criterion-name">06 &nbsp;Location of chat</div>
+        <div class="criterion-gap">Chat is correctly non-intrusive but too passive — footer-only, and a high-friction entry form before the conversation even starts</div>
+      </div>
+    </div>
+
+    <div class="cover-meta">
+      <div class="cover-meta-item"><strong>Webby Winners</strong>VCUarts 2025 · Wellington College 2023</div>
+      <div class="cover-meta-item"><strong>Awwwards</strong>Lincoln · Northwood · Ashland · Middlesex · DBU</div>
+      <div class="cover-meta-item"><strong>Research</strong>Nielsen Norman Group · Google/Ipsos 2024 · Modern Campus/RNL</div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="intro">
+    <div class="intro-eyebrow">Six areas of concern — what's happening vs. what award-winning sites do</div>
+    <h2 class="intro-title">Each concern has a proven fix. Here's the pattern side by side.</h2>
+    <p class="intro-desc">Mapped directly to leadership's six identified areas, benchmarked against Webby Award winners and Awwwards-recognized education sites.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th class="bad" style="width:50%">Current UAGC pattern</th>
+        <th class="good" style="width:50%">Award-winning pattern</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="bad"><strong>White space —</strong> Dense, continuous content blocks make adult learners work to find what matters</td>
+        <td class="good">Modular sections with clear breathing room — each fact lands before the next begins</td>
+      </tr>
+      <tr>
+        <td class="bad"><strong>Above the fold —</strong> Four competing elements (RFI, chat, hero CTA, nav) with no clear primary action</td>
+        <td class="good">One dominant action above the fold — everything else subordinate or below</td>
+      </tr>
+      <tr>
+        <td class="bad"><strong>Multiple RFIs —</strong> The same inquiry form repeated across the page — not a duplication of destination, but a duplication of the ask before the learner is ready</td>
+        <td class="good">One RFI at the moment of highest readiness — after career outcomes, before cost — when the learner is ready to say yes</td>
+      </tr>
+      <tr>
+        <td class="bad"><strong>UAGC in copy —</strong> Institution name repeated throughout body copy, displacing career facts</td>
+        <td class="good">"UAGC" once as a trust anchor — copy uses "you/your" and program-specific career language</td>
+      </tr>
+      <tr>
+        <td class="bad"><strong>Lightcast location —</strong> Outcomes data placed too low, treated as a compliance appendix rather than a decision driver</td>
+        <td class="good">"Career outlook" module as the third section on program pages — before cost, before the CTA</td>
+      </tr>
+      <tr>
+        <td class="bad"><strong>Chat location —</strong> Chat is footer-only and requires name, email, and phone before the conversation starts — too passive to find, too friction-heavy to use</td>
+        <td class="good">Chat surfaced at mid-page friction points on high-intent pages, with a low-barrier entry — answer the question first, collect contact details after</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="intro" style="padding-top:40px">
+    <div class="intro-eyebrow">The adult learner context</div>
+    <h2 class="intro-title">Working adults are calculating, not browsing. Every one of these six issues makes that calculation harder.</h2>
+    <p class="intro-desc">UAGC's audience is evaluating a degree around a job, a family, and a financial decision. The three numbers below define the stakes — and exactly why each concern matters.</p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-card">
+      <div class="stat-num">52%</div>
+      <div class="stat-desc">of adult prospective students would enroll if flexible learning options were clearly communicated on the site</div>
+      <div class="stat-src">Google / Ipsos, 2024</div>
+    </div>
+    <div class="stat-card t">
+      <div class="stat-num">40%</div>
+      <div class="stat-desc">cite financial anxiety as their top barrier — making upfront cost and career outcomes critical to conversion</div>
+      <div class="stat-src">Google / Ipsos, 2024</div>
+    </div>
+    <div class="stat-card n">
+      <div class="stat-num">38%</div>
+      <div class="stat-desc">stop engaging entirely when a site is hard to navigate — adult learners have less tolerance for friction than traditional students</div>
+      <div class="stat-src">Adobe UX Research</div>
+    </div>
+  </div>
+
+  <!-- ── COMPETITIVE LANDSCAPE ── -->
+  <div class="comp-section">
+    <div class="intro-eyebrow">What your competitors are already doing</div>
+    <h2 class="intro-title" style="margin-bottom:6px">SNHU, Capella, Purdue Global, and UMGC are competing for the same adult learner. Here is where each one has already solved a problem UAGC hasn't.</h2>
+    <p class="intro-desc">Based on direct review of live homepages and program pages, April 2026.</p>
+
+    <div class="comp-grid">
+
+      <!-- SNHU -->
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div>
+            <div class="comp-name">Southern New Hampshire University</div>
+            <div class="comp-url">snhu.edu &nbsp;·&nbsp; 189,000+ enrolled students</div>
+          </div>
+          <span class="chip r" style="flex-shrink:0">Strongest overall</span>
+        </div>
+        <div class="comp-body">
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Above the fold:</strong> "Get your degree, your way" with "Find a Program" as sole dominant hero CTA. "Request Info" is secondary and clearly subordinate. No competing elements in the hero viewport.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Cost transparency:</strong> States $342/credit for undergrad explicitly on the homepage. Runs a direct cost comparison naming competitors — including UAGC at $499/credit. Adult learners can assess ROI without clicking anywhere.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>UAGC in copy:</strong> "SNHU" appears once in the header. Hero copy is entirely student-centered: "your future," "your terms," "your success." Institution name does not appear in body copy.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Chat:</strong> Virtual assistant opens immediately with no contact form required. Conversation-first, contact details later.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot r">✕</div>
+            <div class="comp-item-text"><strong>White space:</strong> Mid-page sections are dense with content, icons, and testimonials stacked closely — the one area where UAGC could differentiate on clarity.</div>
+          </div>
+        </div>
+        <div class="comp-takeaway">
+          <div class="comp-takeaway-label">UAGC opportunity</div>
+          <div class="comp-takeaway-text">SNHU wins on above-fold clarity and copy discipline. The gap UAGC can exploit: SNHU's pages are dense mid-scroll. A cleaner, more modular program page experience with Lightcast data prominently placed is a differentiator SNHU doesn't currently offer.</div>
+        </div>
+      </div>
+
+      <!-- PURDUE GLOBAL -->
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div>
+            <div class="comp-name">Purdue Global</div>
+            <div class="comp-url">purdueglobal.edu &nbsp;·&nbsp; "Purdue's online university for working adults"</div>
+          </div>
+          <span class="chip a" style="flex-shrink:0">Strong on ROI framing</span>
+        </div>
+        <div class="comp-body">
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Career-first copy:</strong> Homepage headline is "Don't just go back to school — come back and move forward." Every headline speaks to the returning adult's career situation, not the institution's credentials.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Cost + time calculator:</strong> "On average, bachelor's degree students pay $15k and take 2.3 years" is surfaced prominently with an interactive calculator. Adult learners can model their own scenario before inquiring.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Low-barrier trial:</strong> 3-week trial with no financial obligation removes the commitment barrier entirely — a direct response to adult learner financial anxiety.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot r">✕</div>
+            <div class="comp-item-text"><strong>Above the fold:</strong> Multiple CTAs compete (Apply, Request Info, Find a Program). The career-first copy strength is undercut by CTA clutter at the top of the page.</div>
+          </div>
+        </div>
+        <div class="comp-takeaway">
+          <div class="comp-takeaway-label">UAGC opportunity</div>
+          <div class="comp-takeaway-text">Purdue Global has the best cost-and-time transparency in the competitive set. UAGC should match this: a visible, interactive calculator showing cost and time-to-complete based on transfer credits is a direct competitive response — and directly addresses the 40% of adult learners who cite financial anxiety as their top barrier.</div>
+        </div>
+      </div>
+
+      <!-- CAPELLA -->
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div>
+            <div class="comp-name">Capella University</div>
+            <div class="comp-url">capella.edu &nbsp;·&nbsp; FlexPath self-paced format</div>
+          </div>
+          <span class="chip a" style="flex-shrink:0">Leads on chat UX</span>
+        </div>
+        <div class="comp-body">
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Chat — best in class:</strong> AI chatbot Ella is available 24/7 for advising and financial aid questions. Opens immediately with no contact form. Answers the question first — contact details collected only if the learner wants follow-up. This is exactly what UAGC's chat should do.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Learning format transparency:</strong> FlexPath (self-paced, set your own deadlines) vs. GuidedPath (structured) is explained with costs and timelines on the homepage. Adult learners understand exactly what they're signing up for before any form.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot r">✕</div>
+            <div class="comp-item-text"><strong>Visual design:</strong> Program pages are functionally adequate but visually cluttered. Less refined than the benchmark standard — an area where UAGC can clearly differentiate.</div>
+          </div>
+        </div>
+        <div class="comp-takeaway">
+          <div class="comp-takeaway-label">UAGC opportunity</div>
+          <div class="comp-takeaway-text">Capella has solved the chat friction problem UAGC currently has. The model: open the conversation immediately, collect contact details only if the learner requests follow-up. UAGC's existing chat infrastructure could adopt this with a configuration change — no rebuild required.</div>
+        </div>
+      </div>
+
+      <!-- UMGC -->
+      <div class="comp-card">
+        <div class="comp-card-header">
+          <div>
+            <div class="comp-name">University of Maryland Global Campus</div>
+            <div class="comp-url">umgc.edu &nbsp;·&nbsp; 90,000 students, "dedicated to working adults"</div>
+          </div>
+          <span class="chip g" style="flex-shrink:0">Most similar audience</span>
+        </div>
+        <div class="comp-body">
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Chat in header:</strong> "Chat Now" appears in the utility nav at the top of every page — alongside phone and email — not buried in the footer. It's a primary contact option, not an afterthought.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Cost anchors:</strong> "$0 in textbook costs for nearly every course" and "$21M+ in scholarships awarded last year" are surfaced as headline stats. Immediate, scannable proof points for cost-anxious adult learners.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot g">✓</div>
+            <div class="comp-item-text"><strong>Program navigation by industry:</strong> Homepage organizes programs by industry (Cybersecurity, Business, Healthcare) rather than degree level — directly aligned to how adult learners think about career goals, not academic structure.</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-item-dot r">✕</div>
+            <div class="comp-item-text"><strong>Above the fold + RFIs:</strong> Homepage ends with a full RFI form (name, email, phone, degree interest, area of interest) that mirrors UAGC's friction issue — high-commitment contact ask before the learner has assessed fit.</div>
+          </div>
+        </div>
+        <div class="comp-takeaway">
+          <div class="comp-takeaway-label">UAGC opportunity</div>
+          <div class="comp-takeaway-text">UMGC's industry-first program navigation is a direct pattern worth adopting — adult learners search by "I want to work in healthcare," not "I want a bachelor's degree." Organizing UAGC's program directory by career field rather than academic category is a navigation change that would immediately differentiate the experience from UMGC's and match how adult learners actually think.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CONCERN 1: WHITE SPACE ── -->
+  <div class="tc">
+    <div class="tc-top">
+      <div class="tc-screenshot">
+        <img src="https://assets.awwwards.com/awards/element/2024/09/66d9ace7756cc428532804.png" alt="DBU program page — modular spaced layout">
+        <span class="tc-site-badge teal">Digital Business University · Awwwards HM 2024</span>
+        <div class="tc-screenshot-label">Modular blocks with clear spacing — each fact has room to land before the next one</div>
+      </div>
+      <div class="tc-content">
+        <div>
+          <div class="tc-criterion" style="color:var(--teal)">Concern 01 — White space</div>
+          <div class="tc-title">Dense layouts make adult learners work harder — and they won't</div>
+        </div>
+        <div class="tc-gap">An adult learner researching on a lunch break or after the kids are in bed is scanning, not reading. DBU's Awwwards-recognized program page uses modular blocks with clear breathing room between each fact — credential type, duration, outcomes — so the eye knows exactly where to land. <strong>Dense, continuous content reads as noise.</strong> When everything competes for attention, nothing gets it.</div>
+      </div>
+    </div>
+    <div class="tc-fix">
+      <div class="tc-fix-label">What to fix — White space</div>
+      <div class="tc-fix-text">Break program page content into distinct modules with visible separation: program overview → career outcomes → cost and schedule → admissions. Each module should be completable in a single glance. Increased white space between sections is not emptiness — it is the visual signal that tells a scanning adult learner where one idea ends and the next begins.</div>
+      <div class="tc-fix-source">Model: DBU "in a nutshell" modular layout · Waldorf School of Garden City (Awwwards 2025) program page spacing</div>
+    </div>
+  </div>
+
+  <!-- ── CONCERN 2: ABOVE THE FOLD ── -->
+  <div class="tc">
+    <div class="tc-top">
+      <div class="tc-screenshot">
+        <img src="https://assets.awwwards.com/awards/element/2024/07/6682aedd3fc3e713149126.jpg" alt="Lincoln College hero — one task, full viewport">
+        <span class="tc-site-badge navy">Lincoln College · Awwwards Nominee 2024</span>
+        <div class="tc-screenshot-label">Entire above-the-fold viewport dedicated to one task: "Search for a course"</div>
+      </div>
+      <div class="tc-content">
+        <div>
+          <div class="tc-criterion" style="color:var(--navy)">Concern 02 — Above the fold</div>
+          <div class="tc-title">The first screen should answer one question: what do I do to find the right program?</div>
+        </div>
+        <div class="tc-gap">Lincoln College scored the highest above-fold clarity in the entire benchmark by making the hero do exactly one job — <strong>"Search for a course."</strong> No RFI widget, no chat prompt, no competing navigation. UAGC's current above-the-fold presents four elements simultaneously: hero CTA, RFI button, chat widget, and navigation. Adult learners returning across multiple sessions need a clear re-entry point — not a decision about which surface to engage.</div>
+      </div>
+    </div>
+    <div class="tc-fix">
+      <div class="tc-fix-label">What to fix — Above the fold</div>
+      <div class="tc-fix-text">One primary action above the fold: "Explore programs" — linked to a program directory filtered by career goal. One secondary action at lower visual weight: "Request info." Everything else moves below the fold or into the header. The adult learner who arrives with a specific career question needs to see a path to that answer in the first three seconds — not a choice between four competing surfaces.</div>
+      <div class="tc-fix-source">Model: Lincoln College (5/5 above-fold clarity) · Northwood University "Find your program" hero pattern</div>
+    </div>
+  </div>
+
+  <!-- ── CONCERN 3: MULTIPLE RFIs ── -->
+  <div class="tc">
+    <div class="tc-top">
+      <div class="tc-screenshot">
+        <img src="https://assets.awwwards.com/awards/element/2023/11/655d90e264aaa414945870.png" alt="Middlesex Dubai — Apply Now and Enquire Now competing">
+        <span class="tc-site-badge amber">Middlesex University Dubai · Awwwards 2023 — warning case</span>
+        <div class="tc-screenshot-label">"Apply Now" header + dominant "Enquire Now" form: two high-commitment CTAs competing for the same decision</div>
+      </div>
+      <div class="tc-content">
+        <div>
+          <div class="tc-criterion" style="color:var(--amber)">Concern 03 — Multiple RFIs</div>
+          <div class="tc-title">The issue isn't that they all point to the same place — it's that the ask appears before the learner is ready to say yes</div>
+        </div>
+        <div class="tc-gap">All of UAGC's RFIs lead to the same form, so there's no duplication of destination. The problem is <strong>duplication of the ask at the wrong moment.</strong> Each time an adult learner dismisses "Request Info" because they're still evaluating, they become less likely to respond to it when they finally are ready. After two or three dismissals, the form becomes invisible — including at the one moment it would have converted. Middlesex University Dubai shows the visual version of this: two high-commitment CTAs in the same viewport force a choice before the learner has established intent.</div>
+      </div>
+    </div>
+    <div class="tc-fix">
+      <div class="tc-fix-label">What to fix — Multiple RFIs</div>
+      <div class="tc-fix-text">One RFI placement per page type, at the moment of highest readiness. On program pages: after the career outcomes module and before admissions requirements — when the adult learner has just seen the salary data and is ready to take the next step. On the homepage: accessible from the secondary CTA only, not repeated in the hero body. Consolidate into a single "Next step" component so every page has one clear conversion moment, not several competing ones.</div>
+      <div class="tc-fix-source">Model: Lincoln College course detail — single "Apply Now" CTA, zero competition · Avoid: Middlesex Dubai dual-CTA pattern</div>
+    </div>
+  </div>
+
+  <!-- ── CONCERN 4: UAGC IN COPY + LIGHTCAST ── -->
+  <div class="tc">
+    <div class="tc-top">
+      <div class="tc-screenshot">
+        <img src="https://assets.awwwards.com/awards/element/2023/04/64482f000e093909517475.png" alt="Ashland University — We see you audience-centered copy">
+        <span class="tc-site-badge coral">Ashland University · Awwwards Nominee 2023</span>
+        <div class="tc-screenshot-label">"We see you" — the adult learner addressed before the institution name appears in copy</div>
+      </div>
+      <div class="tc-content">
+        <div>
+          <div class="tc-criterion" style="color:var(--coral)">Concern 04 — Use of UAGC in page copy</div>
+          <div class="tc-title">Every time "UAGC" appears in body copy, it displaces a career fact that could be there instead</div>
+        </div>
+        <div class="tc-gap">Ashland University's hero says <strong>"We see you"</strong> — the institution name sits in the header where it belongs, and the copy earns the scroll. When "UAGC" is repeated throughout program page body copy, it fills space that should be occupied by the information adult learners actually need: job titles, salary ranges, skills employers want. Brand trust is built through design and outcomes evidence — not through repetition.</div>
+      </div>
+    </div>
+    <div class="tc-fix">
+      <div class="tc-fix-label">What to fix — UAGC in page copy</div>
+      <div class="tc-fix-text">Use "UAGC" once per page — in the header or as a single trust anchor above the fold. From that point, copy should speak in second person and program-specific terms: "you'll develop," "roles you can pursue," "employers in this field look for." Program page H1 = the degree name. The next line = a career outcome, not the institution name. CTAs = action-oriented ("Request info," "Talk to an advisor") — not brand-repetitive.</div>
+      <div class="tc-fix-source">Model: Ashland "We see you" hero copy · Wellington College (Webby Winner 2023) — brand narrative rewritten around the learner, not the institution</div>
+    </div>
+  </div>
+
+  <!-- ── CONCERN 5+6: LIGHTCAST + CHAT ── -->
+  <div class="tc">
+    <div class="tc-top">
+      <div class="tc-screenshot">
+        <img src="https://assets.awwwards.com/awards/element/2024/02/65c652aa986d8925873901.png" alt="Northwood University — structured program journey">
+        <span class="tc-site-badge navy">Northwood University · Awwwards Nominee 2024</span>
+        <div class="tc-screenshot-label">Each section earns its place in the journey — content flows toward a decision, not away from one</div>
+      </div>
+      <div class="tc-content">
+        <div>
+          <div class="tc-criterion" style="color:var(--purple)">Concerns 05 &amp; 06 — Lightcast location · Chat location</div>
+          <div class="tc-title">Both Lightcast and chat are in the right spirit — but both are placed where the adult learner can't easily access them when it matters</div>
+        </div>
+        <div class="tc-gap">Lightcast outcomes data placed at the bottom of a program page is a compliance checkbox — the adult learner who needed it to make a decision already left. UAGC's chat is the inverse problem: <strong>not too aggressive, but too passive and too friction-heavy.</strong> It lives in the footer of every page — requiring a full scroll to find — and asks for name, email, and phone before the conversation even starts. An adult learner with a quick question about credit transfer or financial aid is likely to abandon rather than complete a contact form just to ask it.</div>
+      </div>
+    </div>
+    <div class="tc-fix">
+      <div class="tc-fix-label">What to fix — Lightcast location</div>
+      <div class="tc-fix-text">Move Lightcast to the third module on every program page — after program overview, before cost and admissions. Title: "Career outlook for this program." Show median salary, projected growth, top job titles, top skills. Source: "Data: Lightcast." CTA: "See full career outlook." For an adult learner calculating whether a degree justifies the investment, this is the decision driver — treat it like one, not like a footnote.</div>
+      <div class="tc-fix-source">Model: DBU "in a nutshell" module position · Lightcast Widget Builder embeds directly at any page location</div>
+    </div>
+    <div class="tc-fix" style="margin-top:0">
+      <div class="tc-fix-label">What to fix — Chat location &amp; entry experience</div>
+      <div class="tc-fix-text">Three changes: (1) Keep the footer chat as-is — it's correctly non-intrusive and labeled clearly alongside the phone number. (2) Add a secondary chat entry point on high-intent pages — program pages, tuition, financial aid, admissions requirements — as a contextual inline prompt triggered by scroll depth or dwell time, so learners don't have to hunt for it when a question surfaces mid-page. (3) Reduce the entry form friction: asking for name, email, and phone before the conversation starts is a barrier. Best practice is to open the chat window directly and collect contact details only if the learner wants a follow-up. The goal is to answer the question first — the contact information follows naturally from a good conversation.</div>
+      <div class="tc-fix-source">Source: Nielsen Norman Group — "place chat on Contact/Help pages and don't rely on floating buttons as the only access point" · NN/g also notes that vague or high-friction entry reduces chat engagement significantly</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- CLOSING -->
+<div class="closing">
+  <div class="closing-inner">
+    <div class="closing-quote">"For the adult learner weighing a degree against a mortgage, a promotion, and a family schedule — the website that answers 'will this advance my career?' first wins the inquiry."</div>
+    <div class="closing-attr">Sources: Webby Awards · Awwwards · Nielsen Norman Group · Google/Ipsos 2024 · Modern Campus/RNL 2023 · Lightcast · Fastspot · The Web Kitchen · April 2026</div>
+  </div>
+</div>
+
+</body>
+</html>
